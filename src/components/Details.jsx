@@ -12,8 +12,6 @@ const Details = () => {
     checkFavoriteStatus,
     removeMovieFromFavorites,
     addMovieToFavorites,
-    movies,
-    resultsFound,
   } = useGlobalContext();
 
   if (loading) {
