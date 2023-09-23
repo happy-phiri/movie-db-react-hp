@@ -13,14 +13,14 @@ Table of Contents
 
 ### Live Site
 
-You can access the live site at insert-live-site-url-here.
+You can access the live site at https://movie-db-react-hp.netlify.app/.
 
 Installation
 To run this project locally, follow these steps:
 
 ### Clone to your local machine
 
-git clone https://github.com/your-username/movie-db-react.git
+git clone https://github.com/your-username/movie-db-react-hp.git
 Navigate to the project directory:
 
 ### Navigate to the folder
