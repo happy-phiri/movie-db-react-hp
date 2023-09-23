@@ -16,10 +16,10 @@ const Footer = () => {
           <a href="https://wwww.facebook.com/hpy.phiri">
             <FontAwesomeIcon icon={faFacebook} size="xl" className="fav-icon" />
           </a>
-          <a href="https://www.twitter.com">
+          <a href="https://twitter.com/hpy_dev">
             <FontAwesomeIcon icon={faTwitter} size="xl" className="fav-icon" />
           </a>
-          <a href="www.linkedin.com/in/happy-phiri-91b0991b5">
+          <a href="https://www.linkedin.com/in/happy-phiri-91b0991b5">
             <FontAwesomeIcon icon={faLinkedin} size="xl" />
           </a>
           <a href="https://github.com/happy-phiri">
