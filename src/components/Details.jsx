@@ -19,6 +19,7 @@ const Details = () => {
   } = useGlobalContext();
 
   const params = useParams();
+  console.log(params);
 
   // MOVIE DETAIL AND VIDEO URLS
   const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${params.movieId}?language=en-US?api_key=a718a8c95a73aa13ba0a074ab6175f8d&append_to_response=credits`;
@@ -110,8 +111,6 @@ const Details = () => {
     });
     //GET FIRST TWENTY MOVIE CAST
     const topCast = details.credits.cast.slice(0, 25);
-
-    console.log(details);
 
     return (
       <section className="details-container">
