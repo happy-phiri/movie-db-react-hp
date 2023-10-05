@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Nav = () => {
-  const { setSearchTerm, fetchSearchedMovie } = useGlobalContext();
   const [text, setText] = useState("");
 
   const handleFormInput = (e) => {
@@ -14,12 +12,7 @@ const Nav = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSearchTerm(text);
     setText("");
-  };
-
-  const handleSearchMovie = () => {
-    fetchSearchedMovie();
   };
 
   return (
@@ -42,14 +35,11 @@ const Nav = () => {
           />
           <Link to={`results/${text}`}>
             {text ? (
-              <button onClick={() => handleSearchMovie} className="btn">
+              <button className="btn">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
             ) : (
-              <button
-                onClick={() => handleSearchMovie}
-                className="btn"
-                disabled>
+              <button className="btn" disabled>
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
             )}

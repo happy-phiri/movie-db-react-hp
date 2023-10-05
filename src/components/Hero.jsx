@@ -66,7 +66,7 @@ const Hero = () => {
               onClick={() =>
                 addMovieToFavorites(
                   movies.results[randomMovieIndex].id,
-                  movies.results
+                  movies.results[randomMovieIndex]
                 )
               }>
               <FontAwesomeIcon icon={faHeart} />

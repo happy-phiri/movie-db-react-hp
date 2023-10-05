@@ -1,18 +1,83 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import Error from "./Error";
 import { useGlobalContext } from "../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faHeart, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 const Details = () => {
+  const [details, setDetails] = useState("");
+  const [video, setVideo] = useState("");
+
   const {
-    details,
+    setLoading,
     loading,
-    video,
     checkFavoriteStatus,
     removeMovieFromFavorites,
     addMovieToFavorites,
   } = useGlobalContext();
+
+  const params = useParams();
+
+  // MOVIE DETAIL AND VIDEO URLS
+  const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${params.movieId}?language=en-US?api_key=a718a8c95a73aa13ba0a074ab6175f8d&append_to_response=credits`;
+  const videoUrl = `https://api.themoviedb.org/3/movie/${params.movieId}/videos?language=en-US&api_key=a718a8c95a73aa13ba0a074ab6175f8d`;
+
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNzE4YThjOTVhNzNhYTEzYmEwYTA3NGFiNjE3NWY4ZCIsInN1YiI6IjY0ZTQ3ZTlhMWZlYWMxMDExYjJiMTY5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bpgc6SU5J5FiIdjMy8rxrVa4PpmR2UZLXnd_nxr7oWI",
+    },
+  };
+
+  // GET MORE DETAILS ABOUT A SPECIFIC MOVIE
+  const fetchMovieDetails = async (url) => {
+    setLoading(true);
+    try {
+      await fetch(url, options)
+        .then((response) => response.json())
+        .then((response) => setDetails(response));
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!params.movieId) return;
+    fetchMovieDetails(movieDetailsUrl);
+  }, [params.movieId]);
+
+  //GET VIDEO OF MOVIE
+  const fetchVideo = async (url) => {
+    setLoading(true);
+    try {
+      await fetch(url, options)
+        .then((response) => response.json())
+        .then((response) => {
+          for (const result of response.results) {
+            if (
+              result.name === "Official Trailer" ||
+              "Main Trailer" ||
+              "Teaser Trailer"
+            ) {
+              setVideo(result.key);
+            }
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!params.movieId) return;
+    fetchVideo(videoUrl);
+  }, [params.movieId]);
 
   if (loading) {
     return (

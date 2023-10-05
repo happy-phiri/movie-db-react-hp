@@ -1,20 +1,54 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import Error from "./Error";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 const SearchResults = () => {
+  const [resultsFound, setResultsFound] = useState([]);
+
   const {
-    searchTerm,
-    resultsFound,
+    setLoading,
     setMovieId,
     loading,
     checkFavoriteStatus,
     addMovieToFavorites,
     removeMovieFromFavorites,
   } = useGlobalContext();
+
+  const params = useParams();
+
+  const searchUrl = `https://api.themoviedb.org/3/search/movie?include_adult=false&query=${params.searchTerm}&api_key=a718a8c95a73aa13ba0a074ab6175f8d`;
+
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNzE4YThjOTVhNzNhYTEzYmEwYTA3NGFiNjE3NWY4ZCIsInN1YiI6IjY0ZTQ3ZTlhMWZlYWMxMDExYjJiMTY5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bpgc6SU5J5FiIdjMy8rxrVa4PpmR2UZLXnd_nxr7oWI",
+    },
+  };
+
+  //FETCH SEARCH RESULTS
+  const fetchSearchedMovie = async () => {
+    setLoading(true);
+    try {
+      await fetch(searchUrl, options)
+        .then((response) => response.json())
+        .then((response) => setResultsFound(response.results));
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!params.searchTerm) return;
+    fetchSearchedMovie();
+  }, [params.searchTerm]);
 
   const handleGetMovieInfo = (id) => {
     setMovieId(id);
@@ -37,7 +71,7 @@ const SearchResults = () => {
       return (
         <section className="movies-container">
           <h1>
-            Results for <span className="italic">{searchTerm}</span>
+            Results for <span className="italic">{params.searchTerm}</span>
           </h1>
           <div className="movie-cards">
             {resultsFound.map((movie) => {
@@ -79,10 +113,7 @@ const SearchResults = () => {
                             <button
                               className="favorite-btn btn"
                               onClick={() =>
-                                addMovieToFavorites(
-                                  movie.id,
-                                  resultsFound.results
-                                )
+                                addMovieToFavorites(movie.id, movie)
                               }>
                               <FontAwesomeIcon icon={faHeart} />
                             </button>

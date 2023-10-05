@@ -5,10 +5,8 @@ import Movies from "./components/Movies";
 import SearchResults from "./components/SearchResults";
 import Details from "./components/Details";
 import Footer from "./components/Footer";
-import { useGlobalContext } from "./Context";
 
 function App() {
-  const { movieId, searchTerm } = useGlobalContext();
   return (
     <Router>
       <main className="App">
@@ -16,8 +14,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Movies />} />
-          <Route path={`results/${searchTerm}`} element={<SearchResults />} />
-          <Route path={`movie/${movieId}`} element={<Details />} />
+          <Route path={`results/:searchTerm`} element={<SearchResults />} />
+          <Route path={`movie/:movieId`} element={<Details />} />
         </Routes>
         <Footer />
       </main>
