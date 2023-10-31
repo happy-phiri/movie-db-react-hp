@@ -4,7 +4,7 @@ import Error from "./Error";
 import { useGlobalContext } from "../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faHeart, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Details = () => {
   const [details, setDetails] = useState("");
@@ -19,7 +19,6 @@ const Details = () => {
   } = useGlobalContext();
 
   const params = useParams();
-  console.log(params);
 
   // MOVIE DETAIL AND VIDEO URLS
   const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${params.movieId}?language=en-US?api_key=a718a8c95a73aa13ba0a074ab6175f8d&append_to_response=credits`;
@@ -196,20 +195,22 @@ const Details = () => {
           <h2>Main Cast</h2>
           <div className="cast-cards">
             {topCast.map((cast) => {
-              const { character, name, profile_path, cast_id } = cast;
+              const { character, name, profile_path, cast_id, id } = cast;
               return (
-                <div className="cast-card" key={cast_id}>
-                  <img
-                    src={
-                      profile_path
-                        ? `https://image.tmdb.org/t/p/original${profile_path}`
-                        : "/image-not-found.jpg"
-                    }
-                    alt=""
-                  />
-                  <p className="cast-card-character">{character}</p>
-                  <p className="cast-card-name">{name}</p>
-                </div>
+                <Link to={`../actor/${id}`} className="link">
+                  <div className="cast-card" key={cast_id}>
+                    <img
+                      src={
+                        profile_path
+                          ? `https://image.tmdb.org/t/p/original${profile_path}`
+                          : "/image-not-found.jpg"
+                      }
+                      alt=""
+                    />
+                    <p className="cast-card-character">{character}</p>
+                    <p className="cast-card-name">{name}</p>
+                  </div>
+                </Link>
               );
             })}
           </div>

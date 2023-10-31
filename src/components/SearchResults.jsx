@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 
 const SearchResults = () => {
   const [resultsFound, setResultsFound] = useState([]);
+  const [error, setError] = useState("");
 
   const {
     setLoading,
@@ -40,7 +41,7 @@ const SearchResults = () => {
         .then((response) => response.json())
         .then((response) => setResultsFound(response.results));
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
     setLoading(false);
   };
@@ -61,7 +62,7 @@ const SearchResults = () => {
       </section>
     );
   } else {
-    if (resultsFound.length < 1) {
+    if (resultsFound.length < 1 || error) {
       return (
         <section className="movies-container">
           <Error />
@@ -124,15 +125,24 @@ const SearchResults = () => {
                   </div>
                   <div className="movie-card-details">
                     <h2 className="movie-title">{movie.title}</h2>
-                    <p className="movie-release">
-                      Released on {movie.release_date}
-                    </p>
-                    <p className="movie-rating">
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />{" "}
-                      {movie.vote_average.toFixed(2)} / 10
-                    </p>
+                    {movie.release_date ? (
+                      <p className="movie-release">
+                        Released on {movie.release_date}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+
+                    {movie.vote_average ? (
+                      <p className="movie-rating">
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />{" "}
+                        {movie.vote_average.toFixed(2)} / 10
+                      </p>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               );

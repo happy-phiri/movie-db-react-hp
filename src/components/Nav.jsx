@@ -33,7 +33,7 @@ const Nav = () => {
             value={text}
             required
           />
-          <Link to={`results/${text}`}>
+          <Link to={text}>
             {text ? (
               <button className="btn">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />

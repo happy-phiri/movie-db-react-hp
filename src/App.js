@@ -1,27 +1,27 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Nav from "./components/Nav";
+import Layout from "./components/Layout";
 import Movies from "./components/Movies";
 import SearchResults from "./components/SearchResults";
 import Details from "./components/Details";
 import Error from "./components/Error";
-import Footer from "./components/Footer";
+import ActorDetails from "./components/ActorDetails";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <main className="App">
-        <Nav />
-
         <Routes>
-          <Route path="/" element={<Movies />} />
-          <Route path="/results/:searchTerm" element={<SearchResults />} />
-          <Route path="/movie/:movieId" element={<Details />} />
-          <Route path="*" element={<Error />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Movies />} />
+            <Route path=":searchTerm" element={<SearchResults />} />
+            <Route path="movie/:movieId" element={<Details />} />
+            <Route path="actor/:actorId" element={<ActorDetails />} />
+            <Route path="*" element={<Error />} />
+          </Route>
         </Routes>
-        <Footer />
       </main>
-    </Router>
+    </BrowserRouter>
   );
 }
 
